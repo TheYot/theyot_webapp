@@ -56,7 +56,7 @@ export function CheckoutScreen({ bill, tableId }: CheckoutScreenProps) {
 
   return (
     <div className="min-h-dvh bg-background text-main">
-      <AppNav active="orders" />
+      <AppNav active="bill" />
 
       <main className="mx-auto w-full max-w-lg px-4 pt-4 pb-28 sm:px-6 lg:pt-28 lg:pb-12">
         <header className="relative mb-6 flex items-center justify-center">

@@ -30,7 +30,7 @@ export function BillSummaryScreen({ bill, tableId }: BillSummaryScreenProps) {
 
   return (
     <div className="min-h-dvh bg-background text-main">
-      <AppNav active="orders" />
+      <AppNav active="bill" />
 
       <main className="mx-auto w-full max-w-2xl px-4 pt-4 pb-28 sm:px-6 lg:max-w-3xl lg:pt-28 lg:pb-12">
         <header className="relative mb-6 flex items-center justify-center lg:mb-8">

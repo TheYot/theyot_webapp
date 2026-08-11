@@ -3,8 +3,8 @@ import {
   CalendarDays,
   Clock3,
   Home,
+  ReceiptText,
   ScanLine,
-  UserRound,
   type LucideIcon,
 } from "lucide-react";
 import { YotLogo } from "@/components/branding/YotLogo";
@@ -12,7 +12,7 @@ import { YotLogo } from "@/components/branding/YotLogo";
 type NavItem = {
   href: string;
   label: string;
-  id: "explore" | "booking" | "scan" | "orders" | "profile";
+  id: "explore" | "booking" | "scan" | "orders" | "bill";
   icon: LucideIcon;
 };
 
@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "booking", href: "/menu", label: "Booking", icon: CalendarDays },
   { id: "scan", href: "/scan", label: "Scan", icon: ScanLine },
   { id: "orders", href: "/menu", label: "Orders", icon: Clock3 },
-  { id: "profile", href: "/menu", label: "Profile", icon: UserRound },
+  { id: "bill", href: "/bill", label: "Bill", icon: ReceiptText },
 ];
 
 const DESKTOP_LINKS = NAV_ITEMS.filter((item) => item.id !== "scan");
