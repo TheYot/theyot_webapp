@@ -11,7 +11,7 @@ export function WelcomeScreen() {
 
       <div className="relative z-10 flex w-full max-w-lg flex-col items-center gap-10 sm:max-w-xl sm:gap-12 md:max-w-2xl md:gap-14">
         <div className="welcome-logo-enter w-[min(78vw,22rem)] sm:w-[min(70vw,26rem)] md:w-[28rem]">
-          <YotLogo variant="wordmark" priority />
+          <YotLogo variant="wordmark" className="h-auto w-full" priority />
         </div>
 
         <div className="welcome-cta-enter flex w-full justify-center">

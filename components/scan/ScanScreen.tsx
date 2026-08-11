@@ -50,7 +50,7 @@ export function ScanScreen() {
     }
   }, []);
 
-  const goToMenu = useCallback(() => {
+  const goToSuccess = useCallback(() => {
     if (handledRef.current) return;
     handledRef.current = true;
     clearCaptureTimer();
@@ -63,7 +63,7 @@ export function ScanScreen() {
     });
 
     stopCamera();
-    router.push(`/menu?table=${DEMO_TABLE_ID}`);
+    router.push(`/scan/success?table=${DEMO_TABLE_ID}`);
   }, [clearCaptureTimer, router, stopCamera]);
 
   const startCamera = useCallback(async () => {
@@ -102,7 +102,7 @@ export function ScanScreen() {
 
       // Hardcoded MVP: any live camera frame counts as a successful capture.
       captureTimerRef.current = window.setTimeout(() => {
-        goToMenu();
+        goToSuccess();
       }, CAPTURE_DELAY_MS);
     } catch {
       setUi({
@@ -113,7 +113,7 @@ export function ScanScreen() {
       });
       stopCamera();
     }
-  }, [clearCaptureTimer, goToMenu, stopCamera]);
+  }, [clearCaptureTimer, goToSuccess, stopCamera]);
 
   useEffect(() => {
     void startCamera();
@@ -155,8 +155,8 @@ export function ScanScreen() {
               </Button>
               <button
                 type="button"
-                onClick={goToMenu}
-                className="text-sm font-medium text-white/70 underline-offset-2 hover:text-white hover:underline"
+                onClick={goToSuccess}
+                className="cursor-pointer text-sm font-medium text-white/70 underline-offset-2 hover:text-white hover:underline"
               >
                 Continue to menu
               </button>

@@ -3,6 +3,8 @@ import { ASSETS } from "@/lib/assets";
 
 type YotLogoProps = {
   variant?: "wordmark" | "mark";
+  /** `brand` recolors the silver mark for light page backgrounds. */
+  tone?: "default" | "brand";
   className?: string;
   priority?: boolean;
 };
@@ -20,16 +22,19 @@ const VARIANT_CONFIG = {
     alt: "The YOT",
     width: 220,
     height: 205,
-    sizes: "(max-width: 640px) 42vw, 180px",
+    sizes: "(max-width: 640px) 64px, 80px",
   },
 } as const;
 
 export function YotLogo({
   variant = "wordmark",
+  tone = "default",
   className = "",
   priority = false,
 }: YotLogoProps) {
   const config = VARIANT_CONFIG[variant];
+  const toneClass =
+    variant === "mark" && tone === "brand" ? "yot-logo-mark-brand" : "";
 
   return (
     <Image
@@ -39,7 +44,7 @@ export function YotLogo({
       height={config.height}
       sizes={config.sizes}
       priority={priority}
-      className={`h-auto w-full object-contain ${className}`.trim()}
+      className={`object-contain ${toneClass} ${className}`.trim()}
     />
   );
 }

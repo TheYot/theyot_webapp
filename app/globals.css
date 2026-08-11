@@ -20,6 +20,43 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Hide scrollbars everywhere (scroll still works where needed) */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+button,
+[type="button"],
+[type="submit"],
+[type="reset"],
+[role="button"],
+a,
+label[for],
+select,
+summary {
+  cursor: pointer;
 }
 
 @keyframes welcome-fade-up {
@@ -48,21 +85,16 @@ body {
   }
 }
 
-/* Accent pill button — soft lift + top gloss */
+/* Accent pill button — light gloss, no drop shadow */
 .btn-accent {
   background:
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.28) 0%,
-      rgba(255, 255, 255, 0.08) 18%,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.06) 18%,
       rgba(255, 255, 255, 0) 42%
     ),
     var(--accent);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.35) inset,
-    0 -1px 0 rgba(78, 58, 37, 0.12) inset,
-    0 10px 22px rgba(78, 58, 37, 0.28),
-    0 3px 8px rgba(78, 58, 37, 0.16);
 }
 
 .btn-accent:hover {
@@ -71,11 +103,6 @@ body {
 
 .btn-accent:active {
   filter: brightness(0.97);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.28) inset,
-    0 -1px 0 rgba(78, 58, 37, 0.14) inset,
-    0 5px 12px rgba(78, 58, 37, 0.22),
-    0 2px 4px rgba(78, 58, 37, 0.14);
 }
 
 /* Scan viewfinder glass pane */
@@ -88,9 +115,7 @@ body {
       rgba(0, 0, 0, 0.22) 100%
     ),
     rgba(20, 14, 8, 0.55);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.22) inset,
-    0 12px 30px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .scan-enter {
@@ -113,7 +138,13 @@ body {
   }
 }
 
-/* html5-qrcode — fill custom viewfinder, hide library chrome */
+/* Silver mark → brand brown for light backgrounds */
+.yot-logo-mark-brand {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(24%) saturate(900%)
+    hue-rotate(356deg) brightness(95%) contrast(90%);
+}
+
+/* Camera reader — fill custom viewfinder */
 .yot-qr-reader,
 .yot-qr-reader #qr-shaded-region {
   border: none !important;

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { ArrowUp, Search, Star } from "lucide-react";
 import { YotLogo } from "@/components/branding/YotLogo";
 import { AppNav } from "@/components/layout/AppNav";
 import {
@@ -17,49 +18,10 @@ type MenuScreenProps = {
   tableId?: string;
 };
 
-function SearchIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
-      <path
-        d="m16.2 16.2 3.3 3.3"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function StarIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 20 20" className={className} aria-hidden>
-      <path
-        fill="currentColor"
-        d="M10 2.5 12.1 7l4.9.4-3.7 3.2 1.1 4.8L10 12.9 5.6 15.4l1.1-4.8L3 7.4 7.9 7 10 2.5Z"
-      />
-    </svg>
-  );
-}
-
-function AddArrowIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M12 18V6M12 6l-5 5M12 6l5 5"
-        stroke="currentColor"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function MealCard({ meal }: { meal: Meal }) {
   return (
-    <article className="overflow-hidden rounded-[1.35rem] bg-white shadow-[0_8px_24px_rgba(78,58,37,0.08)]">
-      <div className="relative aspect-[4/3] overflow-hidden">
+    <article className="overflow-hidden rounded-[1.35rem] border border-main/10 bg-white">
+      <div className="relative aspect-4/3 overflow-hidden">
         <Image
           src={meal.image}
           alt={meal.name}
@@ -67,8 +29,8 @@ function MealCard({ meal }: { meal: Meal }) {
           sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 240px"
           className="object-cover"
         />
-        <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-[#F5C542] px-2 py-1 text-[11px] font-semibold text-main shadow-sm">
-          <StarIcon className="h-3 w-3" />
+        <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full border border-main/10 bg-[#F5C542] px-2 py-1 text-[11px] font-semibold text-main">
+          <Star className="h-3 w-3 fill-current" strokeWidth={0} />
           {meal.rating.toFixed(1)}
         </span>
       </div>
@@ -88,9 +50,9 @@ function MealCard({ meal }: { meal: Meal }) {
         <button
           type="button"
           aria-label={`Add ${meal.name}`}
-          className="absolute right-3 bottom-3 flex h-9 w-9 items-center justify-center rounded-full bg-main text-white transition hover:bg-main/90 active:scale-95"
+          className="absolute right-3 bottom-3 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-main text-white transition hover:bg-main/90 active:scale-95"
         >
-          <AddArrowIcon className="h-4 w-4" />
+          <ArrowUp className="h-4 w-4" strokeWidth={2.4} />
         </button>
       </div>
     </article>
@@ -123,11 +85,16 @@ export function MenuScreen({ tableId }: MenuScreenProps) {
     <div className="min-h-dvh bg-background text-main">
       <AppNav active="explore" />
 
-      <main className="mx-auto w-full max-w-7xl px-4 pb-28 sm:px-6 lg:px-8 lg:pb-12 xl:px-10">
-        {/* Mobile header */}
+      <main className="mx-auto w-full max-w-7xl px-4 pt-4 pb-28 sm:px-6 lg:px-8 lg:pt-28 lg:pb-12 xl:px-10">
+        {/* Mobile header only — desktop uses the floating navbar */}
         <header className="relative flex items-center justify-center py-4 lg:hidden">
-          <div className="absolute top-1/2 left-0 h-11 w-11 -translate-y-1/2 overflow-hidden rounded-full bg-main">
-            <YotLogo variant="mark" className="h-full w-full scale-110 object-cover" priority />
+          <div className="absolute top-1/2 left-0 -translate-y-1/2">
+            <YotLogo
+              variant="mark"
+              tone="brand"
+              className="h-11 w-11"
+              priority
+            />
           </div>
           <div className="text-center">
             <h1 className="text-xl font-bold tracking-tight">The Yot</h1>
@@ -137,22 +104,11 @@ export function MenuScreen({ tableId }: MenuScreenProps) {
           </div>
         </header>
 
-        {/* Desktop header strip */}
-        <header className="mb-6 hidden items-end justify-between gap-4 pt-8 lg:flex">
-          <div className="flex items-center gap-4">
-            <div className="h-14 w-14 overflow-hidden rounded-full bg-main p-1.5">
-              <YotLogo variant="mark" className="h-full w-full object-contain" priority />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">The Yot</h1>
-              <p className="mt-1 text-sm text-main/55">
-                {tableId
-                  ? `Table ${tableId} · browse & order from your seat`
-                  : "Browse & order from your seat"}
-              </p>
-            </div>
-          </div>
-        </header>
+        {tableId ? (
+          <p className="mb-4 hidden text-sm text-main/55 lg:block">
+            Table {tableId} · browse & order from your seat
+          </p>
+        ) : null}
 
         {/* Search */}
         <div className="relative">
@@ -160,7 +116,7 @@ export function MenuScreen({ tableId }: MenuScreenProps) {
             Search dish
           </label>
           <span className="pointer-events-none absolute top-1/2 left-3 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-main/5 text-main/55">
-            <SearchIcon className="h-4 w-4" />
+            <Search className="h-4 w-4" strokeWidth={2.2} />
           </span>
           <input
             id="menu-search"
@@ -183,7 +139,7 @@ export function MenuScreen({ tableId }: MenuScreenProps) {
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
                   className={[
-                    "relative pb-2 text-sm font-semibold capitalize transition-colors sm:text-base",
+                    "relative cursor-pointer pb-2 text-sm font-semibold capitalize transition-colors sm:text-base",
                     isActive ? "text-main" : "text-main/40 hover:text-main/70",
                   ].join(" ")}
                 >
@@ -211,13 +167,13 @@ export function MenuScreen({ tableId }: MenuScreenProps) {
                       current === category.id ? null : category.id,
                     )
                   }
-                  className="flex w-[4.75rem] flex-col items-center gap-2 sm:w-24"
+                  className="flex w-[4.75rem] cursor-pointer flex-col items-center gap-2 sm:w-24"
                 >
                   <span
                     className={[
                       "relative h-[4.75rem] w-[4.75rem] overflow-hidden rounded-full border-2 transition sm:h-24 sm:w-24",
                       isActive
-                        ? "border-accent shadow-[0_0_0_3px_rgba(196,166,117,0.25)]"
+                        ? "border-accent"
                         : "border-transparent",
                     ].join(" ")}
                   >
@@ -256,7 +212,7 @@ export function MenuScreen({ tableId }: MenuScreenProps) {
               </p>
               <button
                 type="button"
-                className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-main shadow-sm transition hover:bg-background"
+                className="cursor-pointer rounded-full border border-main/10 bg-white px-5 py-2 text-sm font-semibold text-main transition hover:bg-background"
               >
                 {PROMO.cta}
               </button>

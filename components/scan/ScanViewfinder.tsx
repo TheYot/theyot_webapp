@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { QrGlyph } from "@/components/scan/QrGlyph";
+import { ScanLine } from "lucide-react";
 
 type ScanViewfinderProps = {
   children?: ReactNode;
@@ -31,7 +31,7 @@ export function ScanViewfinder({
 
         {showGlyph ? (
           <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-            <QrGlyph className="h-10 w-10 text-white/55 sm:h-11 sm:w-11" />
+            <ScanLine className="h-10 w-10 text-white/55 sm:h-11 sm:w-11" strokeWidth={1.8} />
           </div>
         ) : null}
       </div>

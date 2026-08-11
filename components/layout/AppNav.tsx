@@ -1,103 +1,30 @@
 import Link from "next/link";
+import {
+  CalendarDays,
+  Clock3,
+  Home,
+  ScanLine,
+  UserRound,
+  type LucideIcon,
+} from "lucide-react";
+import { YotLogo } from "@/components/branding/YotLogo";
 
 type NavItem = {
   href: string;
   label: string;
   id: "explore" | "booking" | "scan" | "orders" | "profile";
+  icon: LucideIcon;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { id: "explore", href: "/menu", label: "Explore" },
-  { id: "booking", href: "/menu", label: "Booking" },
-  { id: "scan", href: "/scan", label: "Scan" },
-  { id: "orders", href: "/menu", label: "Orders" },
-  { id: "profile", href: "/menu", label: "Profile" },
+  { id: "explore", href: "/menu", label: "Explore", icon: Home },
+  { id: "booking", href: "/menu", label: "Booking", icon: CalendarDays },
+  { id: "scan", href: "/scan", label: "Scan", icon: ScanLine },
+  { id: "orders", href: "/menu", label: "Orders", icon: Clock3 },
+  { id: "profile", href: "/menu", label: "Profile", icon: UserRound },
 ];
 
-function ExploreIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M4.5 10.5 12 4l7.5 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-4V21H5.5a1 1 0 0 1-1-1v-9.5Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function BookingIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <rect
-        x="4"
-        y="5"
-        width="16"
-        height="15"
-        rx="2"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M8 3.5v3M16 3.5v3M4 9.5h16"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function ScanIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M7 8V6.5A1.5 1.5 0 0 1 8.5 5H10M17 8V6.5A1.5 1.5 0 0 0 15.5 5H14M7 16v1.5A1.5 1.5 0 0 0 8.5 19H10M17 16v1.5a1.5 1.5 0 0 1-1.5 1.5H14M8 12h8"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function OrdersIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.8" />
-      <path
-        d="M12 8v4.2l2.8 1.6"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ProfileIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <circle cx="12" cy="9" r="3.2" stroke="currentColor" strokeWidth="1.8" />
-      <path
-        d="M6.5 18.2c1.4-2.2 3.3-3.3 5.5-3.3s4.1 1.1 5.5 3.3"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-const ICONS = {
-  explore: ExploreIcon,
-  booking: BookingIcon,
-  scan: ScanIcon,
-  orders: OrdersIcon,
-  profile: ProfileIcon,
-} as const;
+const DESKTOP_LINKS = NAV_ITEMS.filter((item) => item.id !== "scan");
 
 type AppNavProps = {
   active?: NavItem["id"];
@@ -106,46 +33,63 @@ type AppNavProps = {
 export function AppNav({ active = "explore" }: AppNavProps) {
   return (
     <>
-      {/* Desktop / large screens — top navbar */}
-      <nav className="sticky top-0 z-40 hidden border-b border-main/10 bg-background/95 backdrop-blur-md lg:block">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-8 py-4 xl:px-10">
-          <Link href="/menu" className="text-lg font-bold tracking-tight text-main">
-            The Yot
-          </Link>
-          <ul className="flex items-center gap-1">
-            {NAV_ITEMS.map((item) => {
-              const Icon = ICONS[item.id];
-              const isActive = item.id === active;
-              const isScan = item.id === "scan";
+      {/* Desktop — fixed floating glassy pill */}
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 hidden lg:block">
+        <div className="pointer-events-auto mx-auto mt-5 w-[min(920px,calc(100%-3rem))] xl:w-[min(1040px,calc(100%-4rem))]">
+          <nav className="flex items-center justify-between gap-3 rounded-full border border-main/12 bg-white/70 px-2.5 py-2 backdrop-blur-2xl">
+            <Link
+              href="/menu"
+              className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full px-3 py-1.5"
+            >
+              <YotLogo variant="mark" tone="brand" className="h-8 w-8" />
+              <span className="text-[0.95rem] font-bold tracking-tight text-main">
+                The Yot
+              </span>
+            </Link>
 
-              return (
-                <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    className={[
-                      "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                      isScan
-                        ? "bg-main text-white hover:bg-main/90"
-                        : isActive
-                          ? "bg-main/10 text-main"
-                          : "text-main/70 hover:bg-main/5 hover:text-main",
-                    ].join(" ")}
-                  >
-                    <Icon className="h-4 w-4" />
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+            <ul className="flex flex-1 items-center justify-center gap-0.5">
+              {DESKTOP_LINKS.map((item) => {
+                const Icon = item.icon;
+                const isActive = item.id === active;
+
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.href}
+                      className={[
+                        "relative inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                        isActive
+                          ? "text-main"
+                          : "text-main/40 hover:text-main/70",
+                      ].join(" ")}
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={2.1} />
+                      {item.label}
+                      {isActive ? (
+                        <span className="absolute inset-x-3.5 bottom-1 h-px rounded-full bg-main" />
+                      ) : null}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <Link
+              href="/scan"
+              className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-main bg-main px-4 py-2 text-sm font-semibold text-white transition hover:bg-main/90"
+            >
+              <ScanLine className="h-4 w-4" strokeWidth={2.2} />
+              Scan
+            </Link>
+          </nav>
         </div>
-      </nav>
+      </header>
 
       {/* Mobile / tablet — bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-main/10 bg-white/95 px-2 pt-2 pb-[max(0.55rem,env(safe-area-inset-bottom))] backdrop-blur-md lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-main/10 bg-white/90 px-2 pt-2 pb-[max(0.55rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
         <ul className="mx-auto grid max-w-lg grid-cols-5 items-end">
           {NAV_ITEMS.map((item) => {
-            const Icon = ICONS[item.id];
+            const Icon = item.icon;
             const isActive = item.id === active;
             const isScan = item.id === "scan";
 
@@ -154,11 +98,11 @@ export function AppNav({ active = "explore" }: AppNavProps) {
                 <li key={item.id} className="flex justify-center">
                   <Link
                     href={item.href}
-                    className="-mt-7 flex flex-col items-center gap-1"
+                    className="-mt-7 flex cursor-pointer flex-col items-center gap-1"
                     aria-label="Scan"
                   >
-                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-main text-white shadow-[0_10px_24px_rgba(78,58,37,0.35)]">
-                      <Icon className="h-6 w-6" />
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full border border-main bg-main text-white">
+                      <Icon className="h-6 w-6" strokeWidth={2.2} />
                     </span>
                     <span className="text-[11px] font-medium text-main">
                       {item.label}
@@ -173,11 +117,11 @@ export function AppNav({ active = "explore" }: AppNavProps) {
                 <Link
                   href={item.href}
                   className={[
-                    "flex flex-col items-center gap-1 px-1 py-1",
+                    "flex cursor-pointer flex-col items-center gap-1 px-1 py-1",
                     isActive ? "text-main" : "text-main/45",
                   ].join(" ")}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-5 w-5" strokeWidth={2.1} />
                   <span className="text-[11px] font-medium">{item.label}</span>
                 </Link>
               </li>

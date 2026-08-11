@@ -4,7 +4,7 @@ type ScanStatusProps = {
 };
 
 const DOT_STYLES = {
-  scanning: "bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.75)]",
+  scanning: "bg-emerald-400",
   ready: "bg-accent",
   error: "bg-red-400",
 } as const;
