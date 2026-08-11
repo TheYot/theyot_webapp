@@ -13,6 +13,7 @@ export type Meal = {
   id: string;
   name: string;
   description: string;
+  details: string;
   priceRwf: number;
   rating: number;
   image: string;
@@ -68,6 +69,8 @@ export const MEALS: Meal[] = [
     id: "beef-burger",
     name: "Beef Burger",
     description: "Wagyu beef with special...",
+    details:
+      "Juicy wagyu beef patty, melted cheddar, crisp lettuce, tomato, and our house special sauce on a toasted brioche bun. Served with golden fries.",
     priceRwf: 12000,
     rating: 4.9,
     image:
@@ -79,6 +82,8 @@ export const MEALS: Meal[] = [
     id: "classic-pizza",
     name: "Classic Pizza",
     description: "Wood-fired with mozzarella...",
+    details:
+      "Wood-fired pizza with San Marzano tomato sauce, fresh mozzarella, basil, and a drizzle of olive oil. Crisp edges, soft center.",
     priceRwf: 15000,
     rating: 4.8,
     image:
@@ -90,6 +95,8 @@ export const MEALS: Meal[] = [
     id: "yot-latte",
     name: "YOT Latte",
     description: "Silky espresso with steamed...",
+    details:
+      "Double espresso pulled fresh, finished with silky steamed milk and a soft microfoam layer. Smooth, balanced, and aromatic.",
     priceRwf: 4500,
     rating: 4.7,
     image:
@@ -101,6 +108,8 @@ export const MEALS: Meal[] = [
     id: "sunrise-plate",
     name: "Sunrise Plate",
     description: "Eggs, toast, avocado &...",
+    details:
+      "Farm eggs your way, toasted sourdough, smashed avocado, cherry tomatoes, and a light herb oil. A bright start to your day.",
     priceRwf: 9000,
     rating: 4.6,
     image:
@@ -112,6 +121,8 @@ export const MEALS: Meal[] = [
     id: "grilled-chicken",
     name: "Grilled Chicken",
     description: "Herb-marinated with citrus...",
+    details:
+      "Herb-marinated chicken grilled over open flame, finished with citrus glaze and served with seasonal greens and roasted potatoes.",
     priceRwf: 14000,
     rating: 4.9,
     image:
@@ -123,6 +134,8 @@ export const MEALS: Meal[] = [
     id: "iced-tea",
     name: "Iced House Tea",
     description: "Chilled citrus brew with...",
+    details:
+      "House-brewed black tea chilled over ice with fresh citrus and a hint of mint. Light, refreshing, and perfect with any meal.",
     priceRwf: 3500,
     rating: 4.5,
     image:
@@ -134,4 +147,17 @@ export const MEALS: Meal[] = [
 
 export function formatRwf(amount: number): string {
   return `${amount.toLocaleString("en-US")} RWF`;
+}
+
+export function getMealById(id: string): Meal | undefined {
+  return MEALS.find((meal) => meal.id === id);
+}
+
+export function getSimilarMeals(meal: Meal, limit = 4): Meal[] {
+  return MEALS.filter(
+    (item) =>
+      item.id !== meal.id &&
+      (item.categories.some((category) => meal.categories.includes(category)) ||
+        item.tabs.some((tab) => meal.tabs.includes(tab) && tab !== "all")),
+  ).slice(0, limit);
 }
