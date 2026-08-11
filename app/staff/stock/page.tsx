@@ -1,5 +1,5 @@
-import { StockPortalScreen } from "@/components/staff/StockPortalScreen";
+import { StockHomeScreen } from "@/components/staff/stock/StockHomeScreen";
 
-export default function StockPortalPage() {
-  return <StockPortalScreen />;
+export default function StockHomePage() {
+  return <StockHomeScreen />;
 }
