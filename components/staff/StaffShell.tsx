@@ -6,12 +6,13 @@ import { useEffect, useId, useState, type ReactNode } from "react";
 import {
   Bell,
   Boxes,
+  ClipboardList,
+  Home,
   LogOut,
   Menu,
-  PackagePlus,
-  ScanLine,
   Settings,
-  TriangleAlert,
+  UtensilsCrossed,
+  Wine,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -32,18 +33,31 @@ type NavLink = {
 };
 
 const PRIMARY_LINKS: NavLink[] = [
+  { href: "/staff/stock", label: "Home", icon: Home, match: "exact" },
   {
-    href: "/staff/stock",
+    href: "/staff/stock/inventory",
     label: "Inventory",
     icon: Boxes,
     match: "exact",
   },
-];
-
-const TOOL_LINKS: NavLink[] = [
-  { href: "/staff/stock#alerts", label: "Low Stock", icon: TriangleAlert },
-  { href: "/staff/stock#intake", label: "Bottle Intake", icon: PackagePlus },
-  { href: "/staff/stock#waste", label: "Waste Log", icon: ScanLine },
+  {
+    href: "/staff/stock/menu",
+    label: "Menu items",
+    icon: UtensilsCrossed,
+    match: "exact",
+  },
+  {
+    href: "/staff/stock/usage",
+    label: "Usage",
+    icon: ClipboardList,
+    match: "exact",
+  },
+  {
+    href: "/staff/stock/liquor",
+    label: "Liquor scanner",
+    icon: Wine,
+    match: "exact",
+  },
 ];
 
 const SYSTEM_LINKS: NavLink[] = [
@@ -72,6 +86,7 @@ export function StaffShell({ children, title, subtitle }: StaffShellProps) {
   const drawerId = useId();
   const [session, setSession] = useState<StaffSession | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   useEffect(() => {
     const raw = window.sessionStorage.getItem("yot-staff");
@@ -100,18 +115,26 @@ export function StaffShell({ children, title, subtitle }: StaffShellProps) {
   }, []);
 
   useEffect(() => {
-    if (!drawerOpen) return;
+    if (!drawerOpen && !logoutOpen) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setDrawerOpen(false);
+      if (event.key !== "Escape") return;
+      if (logoutOpen) setLogoutOpen(false);
+      else if (drawerOpen) setDrawerOpen(false);
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [drawerOpen]);
+  }, [drawerOpen, logoutOpen]);
 
-  const logout = () => {
+  const requestLogout = () => {
+    setDrawerOpen(false);
+    setLogoutOpen(true);
+  };
+
+  const confirmLogout = () => {
     window.sessionStorage.removeItem("yot-staff");
+    setLogoutOpen(false);
     router.push("/staff/login");
   };
 
@@ -177,7 +200,6 @@ export function StaffShell({ children, title, subtitle }: StaffShellProps) {
 
       <nav className="min-h-0 flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {renderNavGroup("Main", PRIMARY_LINKS, onNavigate)}
-        {renderNavGroup("Operations", TOOL_LINKS, onNavigate)}
         {renderNavGroup("System", SYSTEM_LINKS, onNavigate)}
       </nav>
 
@@ -190,7 +212,7 @@ export function StaffShell({ children, title, subtitle }: StaffShellProps) {
         </div>
         <button
           type="button"
-          onClick={logout}
+          onClick={requestLogout}
           className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white"
         >
           <LogOut className="h-4 w-4" strokeWidth={2.1} />
@@ -285,6 +307,46 @@ export function StaffShell({ children, title, subtitle }: StaffShellProps) {
           {children}
         </div>
       </div>
+
+      {logoutOpen ? (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 px-5"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="logout-title"
+        >
+          <div className="w-full max-w-sm rounded-2xl border border-main/10 bg-white p-5 text-center sm:p-6">
+            <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-main/10 bg-background text-main">
+              <LogOut className="h-5 w-5" strokeWidth={2.1} />
+            </div>
+            <h2
+              id="logout-title"
+              className="text-lg font-bold tracking-tight text-main"
+            >
+              Log out?
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-main/55">
+              Are you sure you want to logout?
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setLogoutOpen(false)}
+                className="inline-flex h-11 cursor-pointer items-center justify-center rounded-full border border-main/15 bg-white text-sm font-semibold text-main transition hover:bg-main/5"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmLogout}
+                className="inline-flex h-11 cursor-pointer items-center justify-center rounded-full border border-main bg-main text-sm font-semibold text-white transition hover:bg-main/90"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
